@@ -5,14 +5,18 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Creating virtual environment and installing dependencies...'
+                // For simplicity we rely on flask already installed in the container
+                // You could also create a venv and pip install -r requirements.txt here
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
                 sh 'python3 -m unittest discover -s .'
             }
         }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
@@ -22,6 +26,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Run Application') {
             steps {
                 echo 'Running application...'
@@ -31,12 +36,11 @@ pipeline {
                 '''
             }
         }
+
         stage('Test Application') {
             steps {
                 echo 'Testing application...'
-                sh '''
-                python3 ${WORKSPACE}/test_app.py
-                '''
+                sh 'python3 ${WORKSPACE}/test_app.py'
             }
         }
     }
@@ -50,3 +54,4 @@ pipeline {
         }
     }
 }
+
